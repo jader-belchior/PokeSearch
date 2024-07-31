@@ -1,3 +1,5 @@
+#PokeSearch
+
 ## Objective
 - This aplication provides basic information about all kwown pokemon using the PokemonAPI.
 - It is my first react project, suggested by DevEmDobro to hone my skills with React.
@@ -21,4 +23,4 @@
 - After downloading it, run 'npm install' command on your terminal to install dependencies.
 - On successful install, open it on VSCode and input on terminal 'npm run dev', it should run locally.
 
-# The Pokemon basic information (Name, url, type, imgUrl) are stored locally, it may take a little while to load on your first access.
+### The Pokemon basic information (Name, url, type, imgUrl) are stored locally, it may take a little while to load on your first access.
