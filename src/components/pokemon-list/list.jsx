@@ -161,10 +161,15 @@ export const PokemonList = () => {
       </div>
 
       <PokeList>
-        {shownPokemon.map((pokemon) => (
-          <PokemonCard pokemonDetails={pokemon} key={pokemon.id} />
-        ))}
+        {shownPokemon.length === 0 ? (
+          <p>Loading Pokémons...</p>
+        ) : (
+          shownPokemon.map((pokemon) => (
+            <PokemonCard pokemonDetails={pokemon} key={pokemon.id} />
+          ))
+        )}
       </PokeList>
+      
       {numberShownPokemon < pokemons.length && (
         <div>
           {numberShownPokemon > 11 && (
