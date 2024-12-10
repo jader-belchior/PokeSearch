@@ -2,6 +2,10 @@ import styled from "styled-components";
 
 export const Card = styled.div`
   max-width: 120px;
+  opacity: ${(props) => (props.isVisible ? 1 : 0)};
+  transform: ${(props) => (props.isVisible ? "translateY(0)" : "translateY(10px)")};
+  transition: opacity 0.3s ease, transform 0.3s ease;
+
   img {
     width: 100%;
   }
