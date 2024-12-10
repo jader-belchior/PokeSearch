@@ -10,9 +10,9 @@ import { Button } from "../generalized-button/button";
 import { Card, PokeList, TypeList } from "../../Styles/pokemon-list-style";
 
 // Exibe informações no card
-const PokemonCard = ({ pokemonDetails }) => {
+const PokemonCard = ({ pokemonDetails, isVisible }) => {
   return (
-    <Card>
+    <Card  isVisible={isVisible}>
       <Link to={`/pokemon/${pokemonDetails.id}`}>
         <div>
           <img
@@ -31,21 +31,27 @@ export const PokemonList = () => {
     const savedPokemons = localStorage.getItem("pokemons");
     return savedPokemons ? JSON.parse(savedPokemons) : [];
   });
+
   const [numberShownPokemon, setNumberShownPokemon] = useState(() => {
     const savedNumber = localStorage.getItem("numberShownPokemon");
     return savedNumber ? parseInt(savedNumber, 10) : 10;
   });
+
   const [shownPokemon, setShownPokemon] = useState([]);
+
   const [selectedTypes, setSelectedTypes] = useState(() => {
     const savedTypes = localStorage.getItem("selectedTypes");
     return savedTypes ? JSON.parse(savedTypes) : [];
   });
+
   const [pokemonTypes, setPokemonTypes] = useState(() => {
     const savedTypes = localStorage.getItem("types");
     return savedTypes ? JSON.parse(savedTypes) : [];
   });
 
-  // Sets pokemons with all existing pokemon (name and url)
+  const [visibleIndexes, setVisibleIndexes] = useState([]);
+
+  // define todos os pokemons
   useEffect(() => {
     const fetchData = async () => {
       if (pokemons.length === 0) {
@@ -57,7 +63,7 @@ export const PokemonList = () => {
     fetchData();
   }, [pokemons]);
 
-  // Defines existing types of pokemon
+  // Define tipos de pokemon
   useEffect(() => {
     const fetchTypes = async () => {
       if (pokemonTypes.length === 0) {
@@ -86,7 +92,7 @@ export const PokemonList = () => {
 
           const pokemonToFetch = filteredPokemons.slice(0, numberShownPokemon);
 
-          // Fetch details for the filtered Pokémon
+          // pega detalhes dos pokemons filtrados
           const pokemonDetails = await Promise.all(
             pokemonToFetch.map((pokemon) =>
               fetchPokemonMainDetails(pokemon.url)
@@ -94,6 +100,15 @@ export const PokemonList = () => {
           );
 
           setShownPokemon(pokemonDetails);
+
+          // Exibe os cards com atraso
+        pokemonDetails.forEach((_, index) => {
+          const globalIndex = index + visibleIndexes.length; // Índice global
+          setTimeout(() => {
+            setVisibleIndexes((prev) => [...prev, globalIndex]);
+          }, globalIndex * 150); // Atraso proporcional ao índice global
+        });
+
         } catch (error) {
           console.error("Failed to fetch pokemon details:", error);
         }
@@ -103,7 +118,7 @@ export const PokemonList = () => {
     fetchDetails();
   }, [numberShownPokemon, pokemons, selectedTypes]);
 
-  // Show pokemon in groups of 10
+  // Mostra pokemons de 10 em 10
   const showMorePokemon = () => {
     setNumberShownPokemon((prevShownPokemon) => {
       const newNumber = prevShownPokemon + 10;
@@ -112,7 +127,7 @@ export const PokemonList = () => {
     });
   };
 
-  // Show pokemon in groups of 10
+  // mostra menos pokemons de 10 em 10
   const showLessPokemon = () => {
     setNumberShownPokemon((prevShownPokemon) => {
       if (prevShownPokemon > 10) {
@@ -123,7 +138,7 @@ export const PokemonList = () => {
     });
   };
 
-  // Handle Type Selection
+  // Handler por tipo
   const handleTypeChange = (event) => {
     const { value, checked } = event.target;
     setSelectedTypes((prevSelectedTypes) => {
@@ -144,8 +159,8 @@ export const PokemonList = () => {
         <label>Filter by type: </label>
         <TypeList>
           {pokemonTypes
-            .filter((type) => type !== "unknown" && type !== "stellar") // filter inexisting types
-            .sort((a, b) => a.localeCompare(b)) // order alphabetically
+            .filter((type) => type !== "unknown" && type !== "stellar") // filtra tipos inexistentes
+            .sort((a, b) => a.localeCompare(b)) // ordena alfabeticamente
             .map((type) => (
               <label key={type}>
                 <input
@@ -164,18 +179,21 @@ export const PokemonList = () => {
         {shownPokemon.length === 0 ? (
           <p>Loading Pokémons...</p>
         ) : (
-          shownPokemon.map((pokemon) => (
-            <PokemonCard pokemonDetails={pokemon} key={pokemon.id} />
+          shownPokemon.map((pokemon, index) => (
+            <PokemonCard pokemonDetails={pokemon} key={pokemon.id} isVisible={visibleIndexes.includes(index)}/>
           ))
         )}
       </PokeList>
-      
       {numberShownPokemon < pokemons.length && (
         <div>
           {numberShownPokemon > 11 && (
-            <Button onClick={showLessPokemon} style={{margin: "10px"}}>Show less</Button>
+            <Button onClick={showLessPokemon} style={{ margin: "10px" }}>
+              Show less
+            </Button>
           )}
-          <Button onClick={showMorePokemon} style={{margin: "10px"}}>Load More</Button>
+          <Button onClick={showMorePokemon} style={{ margin: "10px" }}>
+            Load More
+          </Button>
         </div>
       )}
     </section>
