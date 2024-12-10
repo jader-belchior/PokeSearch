@@ -116,6 +116,7 @@ export const PokemonList = () => {
     };
 
     fetchDetails();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [numberShownPokemon, pokemons, selectedTypes]);
 
   // Mostra pokemons de 10 em 10
