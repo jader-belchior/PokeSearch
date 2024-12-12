@@ -6,9 +6,9 @@ export const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;}
     a{
         text-decoration: none;
-        color: ${(props) => props.color ? props.color : 'gray'};
+        color: ${(props) => props.color ? props.color : 'inherit'};
         &:hover{
-        color: ${(props) => props.color ? props.color : 'gray'};
+        color: ${(props) => props.color ? props.color : 'inherit'};
 
         }
     }

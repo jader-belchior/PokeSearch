@@ -2,12 +2,19 @@ import { Link } from "react-router-dom";
 import { ThemeTogglerButton } from "../theme-toggler-button/theme-toggler-button";
 import { ThemeContext } from "../../contexts/theme-context";
 import { useContext } from "react";
-import { StyledNav, DivButton, DivImg, DivTitle, Title } from "../../Styles/navbar-styles";
+import {
+  StyledNav,
+  DivButton,
+  DivImg,
+  DivTitle,
+  Title,
+} from "../../Styles/navbar-styles";
 
 export const Navbar = () => {
   const { theme } = useContext(ThemeContext);
   return (
     <StyledNav theme={theme}>
+
       <DivImg>
         <Link to="/">
           <img src="../../../pokeball.png" alt="pokeball" />
@@ -23,6 +30,7 @@ export const Navbar = () => {
       <DivButton>
         <ThemeTogglerButton />
       </DivButton>
+      
     </StyledNav>
   );
 };

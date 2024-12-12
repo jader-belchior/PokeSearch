@@ -12,7 +12,7 @@ import { Card, PokeList, TypeList } from "../../Styles/pokemon-list-style";
 // Exibe informações no card
 const PokemonCard = ({ pokemonDetails, isVisible }) => {
   return (
-    <Card  isVisible={isVisible}>
+    <Card isVisible={isVisible}>
       <Link to={`/pokemon/${pokemonDetails.id}`}>
         <div>
           <img
@@ -81,18 +81,16 @@ export const PokemonList = () => {
         try {
           let filteredPokemons = pokemons;
 
-          // Verifica o filtro aplicado
+          // Aplica filtros
           if (selectedTypes.length > 0) {
             filteredPokemons = pokemons.filter((pokemon) =>
-              selectedTypes.every(
-                (type) => pokemon.types.includes(type) // Verifica se pokemon.types inclui todos os tipos selecionados
-              )
+              selectedTypes.every((type) => pokemon.types.includes(type))
             );
           }
 
           const pokemonToFetch = filteredPokemons.slice(0, numberShownPokemon);
 
-          // pega detalhes dos pokemons filtrados
+          // Busca detalhes
           const pokemonDetails = await Promise.all(
             pokemonToFetch.map((pokemon) =>
               fetchPokemonMainDetails(pokemon.url)
@@ -101,14 +99,13 @@ export const PokemonList = () => {
 
           setShownPokemon(pokemonDetails);
 
-          // Exibe os cards com atraso
-        pokemonDetails.forEach((_, index) => {
-          const globalIndex = index + visibleIndexes.length; // Índice global
-          setTimeout(() => {
-            setVisibleIndexes((prev) => [...prev, globalIndex]);
-          }, globalIndex * 150); // Atraso proporcional ao índice global
-        });
-
+          // Ajusta visibilidade
+          pokemonDetails.forEach((_, index) => {
+            const globalIndex = index + (shownPokemon.length || 0); // index global da card
+            setTimeout(() => {
+              setVisibleIndexes((prevIndexes) => [...prevIndexes, globalIndex]);
+            }, index * 150); // delay por card
+          });
         } catch (error) {
           console.error("Failed to fetch pokemon details:", error);
         }
@@ -116,7 +113,7 @@ export const PokemonList = () => {
     };
 
     fetchDetails();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [numberShownPokemon, pokemons, selectedTypes]);
 
   // Mostra pokemons de 10 em 10
@@ -181,7 +178,11 @@ export const PokemonList = () => {
           <p>Loading Pokémons...</p>
         ) : (
           shownPokemon.map((pokemon, index) => (
-            <PokemonCard pokemonDetails={pokemon} key={pokemon.id} isVisible={visibleIndexes.includes(index)}/>
+            <PokemonCard
+              pokemonDetails={pokemon}
+              key={pokemon.id}
+              isVisible={visibleIndexes.includes(index)}
+            />
           ))
         )}
       </PokeList>

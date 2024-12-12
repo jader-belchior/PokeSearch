@@ -34,10 +34,10 @@ export const MovesContainer = styled.div`
     display: inline-block;
     padding: 5px 10px;
     margin: 5px;
-    border: 1px solid #ddd;
+    border: 1px solid #4b4b4b;
     border-radius: 8px;
-    background-color: #222222;
-    color: white;
+    background-color: inherit;
+    color: inherit;
     font-size: small;
   }
 `;

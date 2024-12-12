@@ -13,7 +13,7 @@ export const StyledNav = styled.nav`
 
 export const DivImg = styled.div`
   position: absolute;
-  left: 10px;
+  left: 1.5rem;
   img{
     width: 30px
   }
@@ -33,6 +33,6 @@ export const DivTitle = styled.div`
 
 export const DivButton = styled.div`
   position: absolute;
-  right: 0;
+  right: 1.5rem;
   font-size: 12px;
 `;
