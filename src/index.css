@@ -36,3 +36,7 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
+
+@media (max-width: 385px){
+  h1{font-size: 24px!important;}
+}
